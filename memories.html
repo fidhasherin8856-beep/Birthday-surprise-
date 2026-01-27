@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Our Memories ❤️</title>
+<style>
+  body{
+    margin: 0;
+    font-family: segoe UI, sans-serif;
+    min-height:100vh;
+    background:linear-gradient(180deg,#f2bfc4,#0d1434);
+    text-align:center;
+    padding:40px;
+  }
+  .gallery{
+    display:grid;
+    grid-template-columns: repeat(3, 250px);
+    gap:25px;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-bottom:60px;
+  }
+  .gallery img{
+    width:100%;
+    height:auto;
+    max-height: 220px;
+    object-fit:cover;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,.2);
+    display: block;
+  }
+  .message{
+    background:rgba(88, 7, 45, 0.585);
+    color: bisque;
+    backdrop-filter:blur(10px);
+    padding:30px;
+    border-radius:25px;
+    max-width:700px;
+    margin:auto;
+  }
+  .hed-message{
+    color: white;
+    font-family:'Great Vibes',cursive;
+  }
+  .page{
+    margin-bottom:10px;
+    padding: 60px 20px;
+    box-sizing: border-box;
+  }
+ 
+ .popup{
+  display: none; /* hidden by default */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 230, 234, 0.95);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  z-index: 1000;
+  text-align: center;
+  max-width: 300px;
+}
+
+.close{
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  cursor: pointer;
+  font-size: 20px;
+  color: #900;
+} 
+/* Button style */
+#heartsBtn {
+  margin: 50px ;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  font-size: 20px;
+  border: none;
+  border-radius: 25px;
+  background: #ff4d6d;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s;
+  margin-left: 600px;
+  margin-bottom: 20px;
+ font-family: "Times New Roman", Times, serif;
+}
+#heartsBtn:hover {
+  transform: scale(1.1);
+}
+
+/* Hearts container */
+#hearts-container {
+  position: relative;
+  width: 100%;
+  height: 200px; /* adjust space for hearts */
+  overflow: visible;
+}
+
+/* Heart style */
+.heart {
+  position: fixed;
+  font-size: 20px;
+  color: #ff4d6d;
+  animation: floatUp 2s ease-out forwards;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* Animation for floating hearts */
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-200px) scale(1.5);
+  }
+}
+
+.button-wrapper{
+  display: flex;
+  justify-content: center; 
+  text-align: center;
+  margin-right: 550px;
+  margin-bottom: 80px;        
+}
+
+
+.on-wishes{
+  color: #ca539a;
+  font-weight: bold;
+  font-size: large;
+  font-family: 'Courier New', Courier, monospace
+}
+
+/* Overlay */
+#messageOverlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+/* Message Card */
+.messageBox{
+  background: rgba(61, 166, 235, 0.95);
+  padding: 12px 20px;
+  border-radius: 20px;
+  max-width: 200px;
+  font-size: 14px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  position: relative;
+  animation: pop 0.3s ease;
+  color: #fff;
+}
+
+/* Animation */
+@keyframes pop{
+  from{
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to{
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Message Text */
+.messageBox p{
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Close Button */
+
+
+/* Shake animation */
+@keyframes shake {
+  0% { transform: rotate(0deg); }
+  20% { transform: rotate(-5deg); }
+  40% { transform: rotate(5deg); }
+  60% { transform: rotate(-5deg); }
+  80% { transform: rotate(5deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* Class to trigger shake */
+.shake {
+  animation: shake 0.3s ease-in-out 0s 1; /* shakes 1 times */
+  transform-origin: center center; /* ensures proper rotation */
+}
+
+.tooltip {
+  position: absolute;
+  bottom: 10px; /* above bottom of image */
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: bisque;
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  
+}
+
+.tooltip.show {
+  opacity: 1;
+}
+
+.image-card{
+  position:relative;
+  
+}
+
+</style>
+</head>
+<body>
+
+<section class="page memories-page">
+    <h1>Our Beautiful Memories ❤️</h1>
+
+
+<div id="popup" class="popup">
+  <span id="close" onclick="closePopup()">✖</span>
+  <p id="popup-message"></p>
+</div>
+
+
+  <div class="gallery">
+  <div class="image-card">
+    <img src="images/image1.jpg" data-message="First Moment With You🥰💍">
+    <span class="tooltip"></span>
+  </div>
+
+  <div class="image-card">
+    <img src="images/image2.jpg" data-message="hand in hand, eyes to eyes, hearts in sync🫀">
+    <span class="tooltip"></span>
+  </div>
+
+  <div class="image-card">
+    <img src="images/image3.jpg" data-message="trips with you feels like a love-filled adventure🌍✌🏻">
+    <span class="tooltip"></span>
+  </div>
+
+  <div class="image-card">
+    <img src="images/image4.jpg" data-message="your beauty takes my breath away🤩💖">
+    <span class="tooltip"></span>
+  </div>
+
+  <div class="image-card">
+    <img src="images/image5.jpg" data-message="May Allah keep this smile forever🥹🤲🏻">
+    <span class="tooltip"></span>
+  </div>
+
+  <div class="image-card">
+    <img src="images/image6.jpg" data-message="When you look at me, my heart forgets the rest of the world🙈💘">
+    <span class="tooltip"></span>
+  </div>
+</div>
+
+
+  <!-- Message Box -->
+<div id="messageOverlay">
+  <div class="messageBox">
+    <span class="closeBtn" onclick="closeMessage()">✖</span>
+    <p id="messageText"></p>
+  </div>
+</div>
+
+<div class="button-wrapper">
+  <button id="heartsBtn">Tap to see Magic😉</button>
+</div>
+</div>
+</section>
+
+
+<section class="page message-page">
+<div class="message">
+  <h2 class="hed-message">A Special Message for You 💌</h2>
+  <p>
+    On this special day, I want you to know how thankful I am to have you in my life.
+    You are my happiness, my strength, and my forever ❤️...I am soooooo lucky to having youuuu....I love youuu sooo muchhhh man....🥹🫂you are really really take care and love more and more than I expected.....I can't believe this of your love I never expected  one day this kind of man come into my life...I am sooo great man🥰🫶...I really miss youuu😭i can't this long distance relationship...you are great and fulfill of love for me...
+    I love youuu ❤️🫂🥰
+    I miss youuu 🥺💔🥀
+    Ummmmaaa😘😙😚
+  </p>
+
+  <p>
+    I pray that Allah blesses you with good health, a peaceful heart, and success in every step of your life.. May He protect you from all harm and guide you always on the right path. May your days be filled with barakah and your heart with contentment..
+    May Allah bless us with love, understanding, and barakah, keep our hearts united, and guide us always on the right path..Ameen 🤲
+  </p>
+  <p class="on-wishes">
+    Wish you Happy Birthday 🥳🎊may your day be as amazing as you are💞
+  </p>
+</div>
+ <script>
+    
+
+document.querySelectorAll('.image-card').forEach(card => {
+  const img = card.querySelector('img');
+  const tooltip = card.querySelector('.tooltip');
+
+  const show = () => {
+    tooltip.innerText = img.dataset.message;
+    tooltip.classList.add('show');
+  };
+
+  const hide = () => {
+    tooltip.classList.remove('show');
+  };
+
+  // Desktop
+  img.addEventListener('mouseenter', show);
+  img.addEventListener('mouseleave', hide);
+
+  // Mobile
+  img.addEventListener('touchstart', (e) => {
+    e.preventDefault(); // 🔥 IMPORTANT
+    show();
+  });
+
+  img.addEventListener('touchend', hide);
+});
+
+
+
+const btn = document.getElementById('heartsBtn');
+
+btn.addEventListener('click', () => {
+  for(let i=0; i<50; i++){  // create 50 hearts
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random() * 100 + 'vw'; // random horizontal position
+    heart.style.top = Math.random() * 100 + 'vh';
+    heart.style.fontSize = (15 + Math.random()*25) + 'px'; // random size
+    heart.style.animationDuration = (2 + Math.random()*2 ) + 's';
+    heart.innerText = '💖🎀';
+    document.body.appendChild(heart);
+
+    // Remove heart after animation
+    setTimeout(() => {
+      heart.remove();
+    }, 4000);
+  }
+});
+
+
+function showMessage(text){
+  document.getElementById("messageText").innerText = text;
+  document.getElementById("messageOverlay").style.display = "flex";
+}
+
+function closeMessage(){
+  document.getElementById("messageOverlay").style.display = "none";
+}
+
+
+
+window.addEventListener('load', () => {
+  const images = document.querySelectorAll('.image-card img');
+
+  images.forEach((img, index) => {
+    setTimeout(() => {
+      img.classList.add('shake');
+
+      // remove shake after animation ends
+      img.addEventListener('animationend', () => {
+        img.classList.remove('shake');
+      }, { once: true });
+
+    }, index * 100); // 300ms delay between each image
+  });
+});
+
+ </script>
+
+</body>
+</html>

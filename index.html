@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Surprise ❤️</title>
+<style>
+  body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#000428,#004e92);
+    color:white;
+    font-family:Segoe UI,sans-serif;
+  }
+  #count{font-size:80px;}
+</style>
+</head>
+<body>
+
+<h1>Here’s a Surprise ❤️</h1>
+<p>Wait for it...</p>
+<div id="count">10</div>
+
+<script>
+let time=10;
+const c=document.getElementById("count");
+const timer=setInterval(()=>{
+  time--;
+  c.innerText=time;
+  if(time===0){
+    clearInterval(timer);
+    window.location.href="birthday.html";
+  }
+},1000);
+</script>
+
+</body>
+</html>
